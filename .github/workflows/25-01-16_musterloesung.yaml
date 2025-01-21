@@ -86,36 +86,36 @@ jobs:
           path: ./backend/coverage.html
           retention-days: 14
 
-  deploy:
-    name: "Deploy"
-    runs-on: ubuntu-latest
-    if: ${{ github.ref_name == 'main' }}
-    needs: [backend]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  # deploy:
+  #   name: "Deploy"
+  #   runs-on: ubuntu-latest
+  #   if: ${{ github.ref_name == 'main' }}
+  #   needs: [backend]
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Setup SSH
-        run: |
-          # setup / start ssh auth socket which manages our ssh keys when connecting to other servers via ssh
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          # load the private key
-          mkdir ~/.ssh
-          chmod 700 ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-add ~/.ssh/id_ed25519
-          # setup known hosts
-          # FYI: SSH_KNOWN_HOSTS secret stores the result of 'ssh-keyscan remote-server.com'
-          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+  #     - name: Setup SSH
+  #       run: |
+  #         # setup / start ssh auth socket which manages our ssh keys when connecting to other servers via ssh
+  #         ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+  #         # load the private key
+  #         mkdir ~/.ssh
+  #         chmod 700 ~/.ssh
+  #         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+  #         chmod 600 ~/.ssh/id_ed25519
+  #         ssh-add ~/.ssh/id_ed25519
+  #         # setup known hosts
+  #         # FYI: SSH_KNOWN_HOSTS secret stores the result of 'ssh-keyscan remote-server.com'
+  #         echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+  #       env:
+  #         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
-      - name: Download test coverage report
-        uses: actions/download-artifact@v4
-        with: 
-          name: test-coverage-report
+  #     - name: Download test coverage report
+  #       uses: actions/download-artifact@v4
+  #       with: 
+  #         name: test-coverage-report
 
-      - name: Deploy code coverage report to webserver
-        run: scp coverage.html ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/demo/coverage.html
+  #     - name: Deploy code coverage report to webserver
+  #       run: scp coverage.html ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/demo/coverage.html
 
