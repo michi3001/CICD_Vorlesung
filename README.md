@@ -2,6 +2,8 @@
 
 [![Scan Repository for Vulnerabilities](https://github.com/michi3001/CICD_Vorlesung/actions/workflows/25_01-21_cve_scan.yaml/badge.svg)](https://github.com/michi3001/CICD_Vorlesung/actions/workflows/25_01-21_cve_scan.yaml)
 
+[![Dependabot Updates](https://github.com/michi3001/CICD_Vorlesung/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/michi3001/CICD_Vorlesung/actions/workflows/dependabot/dependabot-updates)
+
 # CI/CD Lecture template project
 
 A simple checklist implemented in Golang with an angular frontend.
