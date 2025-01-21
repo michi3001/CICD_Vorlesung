@@ -15,7 +15,7 @@ jobs:
     steps:
       # Check out the repository code
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Install Trivy
       - name: Install Trivy
@@ -23,7 +23,48 @@ jobs:
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b ./bin
           ./bin/trivy --version
 
-      # Run Trivy to scan the repository for vulnerabilities
+      # Run Trivy to scan the repository for vulnerabilities and save the report
       - name: Scan Repository for Vulnerabilities
         run: |
-          ./bin/trivy fs --security-checks vuln,secret ${{ github.event.inputs.scan_path }}
+          ./bin/trivy fs --security-checks vuln,secret --format html -o trivy-report.html ${{ github.event.inputs.scan_path }}
+
+      # Upload the Trivy report as an artifact
+      - name: Upload Trivy Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-report
+          path: trivy-report.html
+
+  deploy:
+    name: "Deploy"
+    runs-on: ubuntu-latest
+    if: ${{ github.ref_name == 'main' }}
+    needs: [scan]
+
+    steps:
+      # Checkout the repository
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Setup SSH
+      - name: Setup SSH
+        run: |
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          mkdir ~/.ssh
+          chmod 700 ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-add ~/.ssh/id_ed25519
+          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+
+      # Download the Trivy report artifact
+      - name: Download Trivy Report
+        uses: actions/download-artifact@v4
+        with:
+          name: trivy-report
+
+      # Deploy the Trivy report to the webserver
+      - name: Deploy Trivy Report to Webserver
+        run: scp trivy-report.html ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/group6/cev_scan_michi.html
