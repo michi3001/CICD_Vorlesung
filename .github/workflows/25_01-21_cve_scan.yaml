@@ -66,4 +66,4 @@ jobs:
 
       # Deploy the Trivy report to the webserver
       - name: Deploy Trivy Report to Webserver
-        run: scp trivy-report.html ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/group6/cev_scan_michi.json
+        run: scp trivy-report.html ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/group6/cev_scan_michi.html
