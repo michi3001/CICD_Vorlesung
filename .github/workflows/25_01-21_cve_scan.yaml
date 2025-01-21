@@ -1,0 +1,32 @@
+name: Scan Repository for Vulnerabilities
+
+on:
+  schedule:
+  - cron: "0 12 * * 1"
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the repository code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Install Trivy
+      - name: Install Trivy
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b ./bin
+          ./bin/trivy --version
+
+      # Run Trivy to scan the repository for vulnerabilities
+      - name: Scan Repository for Vulnerabilities
+        run: |
+          ./bin/trivy fs --security-checks vuln,secret . || exit 1
+
+      # Optionally, upload scan results as an artifact
+      - name: Upload Scan Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: trivy-scan-results
+          path: trivy.db
