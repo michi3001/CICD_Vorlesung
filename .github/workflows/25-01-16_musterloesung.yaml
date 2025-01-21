@@ -117,5 +117,5 @@ jobs:
           name: test-coverage-report
 
       - name: Deploy code coverage report to webserver
-        run: scp coverage.html ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/demo/coverage_michi.html
+        run: scp coverage.html ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/group6/coverage_michi.html
 
