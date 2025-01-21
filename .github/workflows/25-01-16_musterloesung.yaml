@@ -89,7 +89,7 @@ jobs:
   deploy:
     name: "Deploy"
     runs-on: ubuntu-latest
-    if: ${{ github.ref_name == 'main' }}
+    if: ${{ github.ref_name == 'main' }} && github.actor != 'dependabot[bot]'  # Skip if PR is from dependabot
     needs: [backend]
     steps:
       - name: Checkout
