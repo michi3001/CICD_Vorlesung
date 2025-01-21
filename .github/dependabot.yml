@@ -11,6 +11,14 @@ updates:
     directory: "/frontend"  # Pfad zu deiner package.json, in der Regel das Wurzelverzeichnis
     schedule:
       interval: "daily"  # Häufigkeit der Updates (daily, weekly, monthly)
+    groups:
+      angular:
+        applies-to: version-updates
+        patterns:
+          - "@angular/"
+        update-types:
+          - "minor"
+          - "patch"
 
   # Für GitHub Actions
   - package-ecosystem: "github-actions"  # für GitHub Actions Workflows
