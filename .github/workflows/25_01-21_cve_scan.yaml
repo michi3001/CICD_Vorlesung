@@ -1,17 +1,21 @@
 name: Scan Repository for Vulnerabilities
 
 on:
-  workflow_dispatch:
-    inputs:
-      scan_path:
-        description: 'Path to scan (default: .)'
-        required: false
-        default: '.'
+  schedule:
+    # Runs once a day at midnight
+    - cron: "0 12 * * 1"
+  workflow_dispatch: # Allows manual triggering
+
 
 jobs:
   scan:
+    name: "Trivy Dependency Scan"
     runs-on: ubuntu-latest
+  
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Scan dependencies for vulnerabilities
         uses: aquasecurity/trivy-action@0.29.0
         with:
@@ -55,3 +59,4 @@ jobs:
 
       - name: Deploy Trivy Report to Webserver
         run: scp trivy-scan.html ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/group6/cev_scan_michi.html
+
