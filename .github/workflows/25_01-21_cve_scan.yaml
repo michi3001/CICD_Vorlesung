@@ -38,7 +38,6 @@ jobs:
   deploy:
     name: "Deploy"
     runs-on: ubuntu-latest
-    if: ${{ github.ref_name == 'main' }}
     needs: [scan]
 
     steps:
