@@ -17,7 +17,8 @@ jobs:
         with:
           scan-type: "fs"
           scan-ref: .
-          format: 'table'  # oder 'json' für eine andere Ausgabe
+          format: 'template'  # oder 'json' für eine andere Ausgabe
+          template: '@./trivy-html-report-template.tpl'
           output: 'trivy-scan.html'
 
       - name: Upload Trivy scan report
