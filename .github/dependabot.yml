@@ -1,0 +1,19 @@
+version: 2
+updates:
+  # Für Go (mod)
+  - package-ecosystem: "gomod" # für Go
+    directory: "/backend"  # Pfad zu deinem Go-Modul, in der Regel das Wurzelverzeichnis
+    schedule:
+      interval: "daily"  # Häufigkeit der Updates (daily, weekly, monthly)
+  
+  # Für npm
+  - package-ecosystem: "npm" # für Node.js-Projekte
+    directory: "/frontend"  # Pfad zu deiner package.json, in der Regel das Wurzelverzeichnis
+    schedule:
+      interval: "daily"  # Häufigkeit der Updates (daily, weekly, monthly)
+
+  # Für GitHub Actions
+  - package-ecosystem: "github-actions"  # für GitHub Actions Workflows
+    directory: "/"  # Pfad zu deinen Workflow-Dateien
+    schedule:
+      interval: "daily"  # Häufigkeit der Updates (daily, weekly, monthly)
