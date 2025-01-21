@@ -3,6 +3,12 @@ name: Scan Repository for Vulnerabilities
 on:
   schedule:
   - cron: "0 12 * * 1"
+  workflow_dispatch:
+    inputs:
+      scan_path:
+        description: 'Path to scan (default: .)'
+        required: false
+        default: '.'
 
 jobs:
   scan:
