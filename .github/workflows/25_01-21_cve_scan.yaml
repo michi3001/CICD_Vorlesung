@@ -10,30 +10,22 @@ on:
 
 jobs:
   scan:
-    runs-on: ubuntu-22.04
-
+    runs-on: ubuntu-latest
     steps:
-      # Check out the repository code
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - name: Scan dependencies for vulnerabilities
+        uses: aquasecurity/trivy-action@0.29.0
+        with:
+          scan-type: "fs"
+          scan-ref: .
+          format: 'template'
+          template: '@./trivy-html-report-template.tpl'
+          output: 'trivy-scan.html'
 
-      # Install Trivy
-      - name: Install Trivy
-        run: |
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b ./bin
-          ./bin/trivy --version
-
-      # Run Trivy to scan the repository for vulnerabilities and save the report (in HTML format)
-      - name: Scan Repository for Vulnerabilities
-        run: |
-          ./bin/trivy fs --scanners vuln,secret --format template -o trivy-report.html ${{ github.event.inputs.scan_path }}
-
-      # Upload the Trivy report as an artifact
-      - name: Upload Trivy Report
+      - name: Upload Trivy scan report
         uses: actions/upload-artifact@v4
         with:
-          name: trivy-report
-          path: trivy-report.html
+          name: trivy-scan-report
+          path: trivy-scan.html
 
   deploy:
     name: "Deploy"
@@ -62,8 +54,8 @@ jobs:
       - name: Download Trivy Report
         uses: actions/download-artifact@v4
         with:
-          name: trivy-report
+          name: trivy-scan-report
 
       # Deploy the Trivy report to the webserver
       - name: Deploy Trivy Report to Webserver
-        run: scp trivy-report.html ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/group6/cev_scan_michi.html
+        run: scp trivy-scan.html ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/group6/cev_scan_michi.html

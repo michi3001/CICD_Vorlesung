@@ -1,6 +1,8 @@
-# CI/CD Lecture template project
-
 [![CI/CD](https://github.com/michi3001/CICD_Vorlesung/actions/workflows/25-01-16_musterloesung.yaml/badge.svg)](https://github.com/michi3001/CICD_Vorlesung/actions/workflows/25-01-16_musterloesung.yaml)
+
+[![Scan Repository for Vulnerabilities](https://github.com/michi3001/CICD_Vorlesung/actions/workflows/25_01-21_cve_scan.yaml/badge.svg)](https://github.com/michi3001/CICD_Vorlesung/actions/workflows/25_01-21_cve_scan.yaml)
+
+# CI/CD Lecture template project
 
 A simple checklist implemented in Golang with an angular frontend.
 
