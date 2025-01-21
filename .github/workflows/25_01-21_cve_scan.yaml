@@ -23,10 +23,10 @@ jobs:
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b ./bin
           ./bin/trivy --version
 
-      # Run Trivy to scan the repository for vulnerabilities and save the report (in JSON format)
+      # Run Trivy to scan the repository for vulnerabilities and save the report (in HTML format)
       - name: Scan Repository for Vulnerabilities
         run: |
-          ./bin/trivy fs --scanners vuln,secret --format json -o trivy-report.json ${{ github.event.inputs.scan_path }}
+          ./bin/trivy fs --scanners vuln,secret --format html -o trivy-report.html ${{ github.event.inputs.scan_path }}
 
       # Upload the Trivy report as an artifact
       - name: Upload Trivy Report
