@@ -17,8 +17,7 @@ jobs:
         with:
           scan-type: "fs"
           scan-ref: .
-          format: 'template'
-          template: '@./trivy-html-report-template.tpl'
+          format: 'table'  # oder 'json' für eine andere Ausgabe
           output: 'trivy-scan.html'
 
       - name: Upload Trivy scan report
@@ -33,11 +32,9 @@ jobs:
     needs: [scan]
 
     steps:
-      # Checkout the repository
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Setup SSH
       - name: Setup SSH
         run: |
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
@@ -50,12 +47,10 @@ jobs:
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
-      # Download the Trivy report artifact
       - name: Download Trivy Report
         uses: actions/download-artifact@v4
         with:
           name: trivy-scan-report
 
-      # Deploy the Trivy report to the webserver
       - name: Deploy Trivy Report to Webserver
         run: scp trivy-scan.html ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/group6/cev_scan_michi.html
