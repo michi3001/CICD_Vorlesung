@@ -1,5 +1,7 @@
 # CI/CD Lecture template project
 
+[![CI/CD](https://github.com/michi3001/CICD_Vorlesung/actions/workflows/25-01-16_musterloesung.yaml/badge.svg)](https://github.com/michi3001/CICD_Vorlesung/actions/workflows/25-01-16_musterloesung.yaml)
+
 A simple checklist implemented in Golang with an angular frontend.
 
 One day it will be a modern replacement for [strichliste.org](https://strichliste.org) maybe. 
