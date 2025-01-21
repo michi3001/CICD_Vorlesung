@@ -26,7 +26,7 @@ jobs:
       # Run Trivy to scan the repository for vulnerabilities and save the report (in HTML format)
       - name: Scan Repository for Vulnerabilities
         run: |
-          ./bin/trivy fs --scanners vuln,secret --format html -o trivy-report.html ${{ github.event.inputs.scan_path }}
+          ./bin/trivy fs --scanners vuln,secret --format template -o trivy-report.html ${{ github.event.inputs.scan_path }}
 
       # Upload the Trivy report as an artifact
       - name: Upload Trivy Report
