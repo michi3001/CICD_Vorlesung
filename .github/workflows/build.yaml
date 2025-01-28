@@ -158,11 +158,11 @@ jobs:
       - name: Run Smoketest
         run: |
           docker run -d -p 8080:8080 --name smoketest-container ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          # Smoketest ausführen
-          go run ./cmd/smoketest/
-          # Container stoppen und entfernen
-          docker stop smoketest-container
-          docker rm smoketest-container
+          cd ./cmd/smoketest/
+          go mod init
+          go run .
+          docker stop smoketest-container || true
+          docker rm smoketest-container || true
 
       - name: Push Docker image
         run: |
