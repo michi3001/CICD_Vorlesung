@@ -152,11 +152,9 @@ jobs:
 
       - name: Run Smoketest
         run: |
-          docker run -d --name smoketest-container ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          # Warten, bis der Container vollständig gestartet ist (optional)
-          sleep 10
+          docker run -d -p 8080:8080 --name smoketest-container ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           # Smoketest ausführen
-          docker exec smoketest-container go run ./cmd/smoketest/
+          go run ./cmd/smoketest/
           # Container stoppen und entfernen
           docker stop smoketest-container
           docker rm smoketest-container
