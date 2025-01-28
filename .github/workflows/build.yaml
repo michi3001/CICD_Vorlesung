@@ -11,8 +11,6 @@ env:
   # Else they will maybe interpreted as a number, which will e.g. remove traling zeros.
   GO_VERSION: "1.23.4"
   NODE_VERSION: "22.11.0"
-  CONTAINER_IMAGE_NAME: "ghcr.io/rubenhoenle/ci-cd-lecture-project-template"
-  CONTAINER_IMAGE_TAG: "latest"
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
