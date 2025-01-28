@@ -150,6 +150,11 @@ jobs:
         run: |
           docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
 
+      - name: Install go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
       - name: Run Smoketest
         run: |
           docker run -d -p 8080:8080 --name smoketest-container ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
